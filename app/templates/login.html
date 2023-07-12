@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Log In to your Poke Arena Account:</h1>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>Username: {{ form.username }}</p> 
+    <p>Password: {{ form.password }}</p>
+    <p>{{ form.submit }}</p>
+</form>
+{% endblock %}

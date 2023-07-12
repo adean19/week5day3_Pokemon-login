@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Enter a Pokemon's Name to see it's info:</h1>
+<form method="POST">
+    <p>
+        {{ form.pokemon_name }}
+    </p>
+    <p>
+        {{ form.submit() }}
+    </p>
+</form>
+
+{% if pokemon_data %}
+<div class="pokemon">
+    <div class="card" style="width: 18rem;">
+        <img src="{{ pokemon_data['Sprite'] }}" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ pokemon_data['Name'] }}</h5>
+          <p class="card-text">{{ pokemon_data['Ability'] }}</p>
+          <p class="card-text">HP: {{ pokemon_data['Stats']['HP'] }}</p>
+          <p class="card-text">Attack: {{ pokemon_data['Stats']['Attack'] }}</p>
+          <p class="card-text">Defense: {{ pokemon_data['Stats']['Defense'] }}</p>
+          <a href="#" class="btn btn-primary">Catch</a>
+        </div>
+      </div>
+</div>
+{% endif %}
+{% endblock content %}
