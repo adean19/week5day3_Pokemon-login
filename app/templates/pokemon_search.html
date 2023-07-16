@@ -21,7 +21,9 @@
           <p class="card-text">HP: {{ pokemon_data['Stats']['HP'] }}</p>
           <p class="card-text">Attack: {{ pokemon_data['Stats']['Attack'] }}</p>
           <p class="card-text">Defense: {{ pokemon_data['Stats']['Defense'] }}</p>
-          <a href="#" class="btn btn-primary">Catch</a>
+          {% if current_user.is_anonymous == False %}
+          <a href="{{ url_for('catch_pokemon', pokemon_id=pokemon_id) }}" class="btn btn-primary">Catch</a>
+          {% endif %}
         </div>
       </div>
 </div>
