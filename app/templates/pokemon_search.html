@@ -14,18 +14,20 @@
 {% if pokemon_data %}
 <div class="pokemon">
     <div class="card" style="width: 18rem;">
-        <img src="{{ pokemon_data['Sprite'] }}" class="card-img-top">
+        <img src="{{ pokemon_data.sprite }}" class="card-img-top">
         <div class="card-body">
-          <h5 class="card-title">{{ pokemon_data['Name'] }}</h5>
-          <p class="card-text">{{ pokemon_data['Ability'] }}</p>
-          <p class="card-text">HP: {{ pokemon_data['Stats']['HP'] }}</p>
-          <p class="card-text">Attack: {{ pokemon_data['Stats']['Attack'] }}</p>
-          <p class="card-text">Defense: {{ pokemon_data['Stats']['Defense'] }}</p>
-          {% if current_user.is_anonymous == False %}
-          <a href="{{ url_for('catch_pokemon', pokemon_id=pokemon_id) }}" class="btn btn-primary">Catch</a>
-          {% endif %}
+            <h5 class="card-title">{{ pokemon_data.name }}</h5>
+            <p class="card-text">{{ pokemon_data.ability }}</p>
+            <p class="card-text">HP: {{ pokemon_data.hp }}</p>
+            <p class="card-text">Attack: {{ pokemon_data.attack }}</p>
+            <p class="card-text">Defense: {{ pokemon_data.defense }}</p>
+            {% if current_user.is_anonymous == False %}
+            <a href="{{ url_for('catch_pokemon', pokemon_id=pokemon_data.pokemon_id) }}"
+                class="btn btn-primary">Catch</a>
+            {% endif %}
         </div>
-      </div>
+    </div>
 </div>
 {% endif %}
+
 {% endblock content %}

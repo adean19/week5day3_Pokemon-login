@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Your Pokémon Team</h1>
+    <div class="row">
+        {% for caught_pokemon, pokemon in user_team %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="{{ pokemon.sprite }}" class="card-img-top" alt="{{ pokemon.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ pokemon.name }}</h5>
+                        <p class="card-text">Ability: {{ pokemon.ability }}</p>
+                        <p class="card-text">HP: {{ pokemon.hp }}</p>
+                        <p class="card-text">Attack: {{ pokemon.attack }}</p>
+                        <p class="card-text">Defense: {{ pokemon.defense }}</p>
+                        <form method="post" action="{{ url_for('release_pokemon', pokemon_id=caught_pokemon.pokemon_id) }}">
+                            <button type="submit" class="btn btn-danger">Release</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

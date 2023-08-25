@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "connectString": "postgres://snxrbtyq:KSfZdb1H2GHWF2Hi9wEudgpvYp0C8iG7@mahmud.db.elephantsql.com/snxrbtyq",
+            "name": "PocketArena"
+        }
+    ]
+}
