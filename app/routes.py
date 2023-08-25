@@ -134,11 +134,11 @@ def release_pokemon(pokemon_id):
     pokemon_to_release = Caught_Pokemon.query.filter_by(pokemon_id=pokemon_id, user_id=current_user.user_id).first()
 
     if pokemon_to_release:
-        released_pokemon = Pokemon.query.get(pokemon_to_release.pokemon_id)  # Fetch the corresponding Pokemon object
-        released_pokemon_name = released_pokemon.name  # Get the name of the released Pokémon
+        released_pokemon = Pokemon.query.get(pokemon_to_release.pokemon_id) 
+        released_pokemon_name = released_pokemon.name 
         db.session.delete(pokemon_to_release)
         db.session.commit()
-        flash(f'{released_pokemon_name} has been released from your party.')  # Show the name in the flash message
+        flash(f'{released_pokemon_name} has been released from your party.') 
     else:
         flash('Pokemon not found in your team.')
 
