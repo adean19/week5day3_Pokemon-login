@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- Your Pokémon Card -->
+        <div class="col-md-4">
+            <div class="card">
+                <h2 class="card-header">Your HP: {{ original_user_pokemon_hp }}</h2>
+                <div class="user_pokemon">
+                    <img src="{{ user_pokemon.pokemon.sprite }}" class="card-img-top" alt="{{ user_pokemon.name }}">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ user_pokemon.pokemon.name }}</h5>
+                    <p class="card-text">Ability: {{ user_pokemon.pokemon.ability }}</p>
+                    <p class="card-text">Attack: {{ user_pokemon.pokemon.attack }}</p>
+                    <p class="card-text">Defense: {{ user_pokemon.pokemon.defense }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <form id="attack-form" method="post"
+                action="{{ url_for('attack', user_pokemon_id=user_pokemon.catch_id, opponent_pokemon_id=opponent_pokemon.pokemon_id) }}">
+                <button type="submit" class="btn btn-primary">Attack</button>
+            </form>
+        </div>
+
+        <!-- Opponent's Pokémon Card -->
+        <div class="col-md-4">
+            <div class="card">
+                <h2 class="card-header">Opponent's HP: {{ original_opponent_hp }}</h2>
+                <img src="{{ opponent_pokemon.sprite }}" class="card-img-top" alt="{{ opponent_pokemon.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ opponent_pokemon.name }}</h5>
+                    <p class="card-text">Ability: {{ opponent_pokemon.ability }}</p>
+                    <p class="card-text">Attack: {{ opponent_pokemon.attack }}</p>
+                    <p class="card-text">Defense: {{ opponent_pokemon.defense }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

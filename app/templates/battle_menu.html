@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Battle Menu</h1>
+    <ul>
+        {% for caught_pokemon in user_team %}
+            <li><a href="{{ url_for('battle', opponent_id=1, user_pokemon_id=caught_pokemon.catch_id) }}">{{ caught_pokemon.pokemon.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

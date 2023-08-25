@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app
 from .forms import PokemonForm, SignUpForm, LoginForm
@@ -145,3 +145,61 @@ def release_pokemon(pokemon_id):
     return redirect(url_for('my_team'))
 
 #Battling Pokemon
+@app.route('/battle', methods=["GET"])
+@login_required
+def battle_menu():
+    user_team = Caught_Pokemon.query.filter_by(user_id=current_user.user_id).all()
+    return render_template('battle_menu.html', user_team=user_team)
+
+@app.route('/battle/<int:opponent_id>', methods=["GET"])
+@login_required
+def battle(opponent_id):
+    user_pokemon_id = request.args.get('user_pokemon_id')
+    opponent_pokemon = Pokemon.query.get(opponent_id)
+    user_pokemon = Caught_Pokemon.query.get(user_pokemon_id)
+
+    if not opponent_pokemon or not user_pokemon:
+        flash('Invalid Pokémon selection for battle.')
+        return redirect(url_for('battle_menu'))
+
+    original_opponent_hp = int(opponent_pokemon.hp)
+    original_user_pokemon_hp = int(user_pokemon.pokemon.hp)
+
+    return render_template('battle.html', opponent_pokemon=opponent_pokemon, user_pokemon=user_pokemon,
+                           original_opponent_hp=original_opponent_hp, original_user_pokemon_hp=original_user_pokemon_hp)
+
+@app.route('/battle/attack/<int:user_pokemon_id>/<int:opponent_pokemon_id>', methods=["POST"])
+@login_required
+def attack(user_pokemon_id, opponent_pokemon_id):
+    user_pokemon = Caught_Pokemon.query.get(user_pokemon_id)
+    opponent_pokemon = Pokemon.query.get(opponent_pokemon_id)
+
+    if not user_pokemon or not opponent_pokemon:
+        flash('Invalid Pokémon selection for battle.')
+        return redirect(url_for('battle_menu'))
+
+    damage_to_opponent = int(user_pokemon.pokemon.attack) - int(opponent_pokemon.defense)
+    damage_to_user = int(opponent_pokemon.attack) - int(user_pokemon.pokemon.defense)
+
+    opponent_pokemon_hp = int(session.get('opponent_pokemon_hp', opponent_pokemon.hp))
+    if damage_to_opponent > 0:
+        opponent_pokemon_hp -= damage_to_opponent
+
+    user_pokemon_hp = int(session.get('user_pokemon_hp', user_pokemon.pokemon.hp))
+    if damage_to_user > 0:
+        user_pokemon_hp -= damage_to_user
+
+    session['opponent_pokemon_hp'] = opponent_pokemon_hp
+    session['user_pokemon_hp'] = user_pokemon_hp
+
+    db.session.commit()
+
+    # Check if the battle is over after the attack
+    if user_pokemon_hp <= 0:
+        flash('You have lost the battle. Please try again.')
+        return redirect(url_for('battle_menu'))
+    elif opponent_pokemon_hp <= 0:
+        flash('You won!')
+        return redirect(url_for('battle_menu'))
+
+    return redirect(url_for('battle', opponent_id=opponent_pokemon_id, user_pokemon_id=user_pokemon_id))

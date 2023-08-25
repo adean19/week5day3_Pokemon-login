@@ -43,6 +43,9 @@ class Caught_Pokemon(db.Model):
     pokemon_id = db.Column(db.Integer, db.ForeignKey('pokemon.pokemon_id'))
     date_caught = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
+    user = db.relationship('User', backref=db.backref('caught_pokemons', lazy=True))
+    pokemon = db.relationship('Pokemon', backref=db.backref('caught_pokemons', lazy=True))
+
     def __init__(self, user_id, pokemon_id):
         self.user_id = user_id
         self.pokemon_id = pokemon_id
